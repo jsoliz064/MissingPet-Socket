@@ -44,7 +44,6 @@ class Server {
         //this.app.use( this.paths.usuarios, require('../routes/usuarios'));
         //this.app.use( this.paths.users_salas, require('../routes/userssalas'));
         // Mis Rutas
-        this.app.use( '/api/login', require('../routes/auth'));
 
     }
     sockets() {
