@@ -1,4 +1,8 @@
-let socket=io();
+let socket=io( {
+   extraHeaders: {
+       'x-token': "123456"
+   }
+});
 
 let divfotos=document.getElementById("divfotos");
 let padre=document.getElementById("padre");

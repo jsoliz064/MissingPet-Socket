@@ -1,4 +1,8 @@
-let socket=io();
+let socket=io( {
+    extraHeaders: {
+        'x-token': "123456"
+    }
+ });
 let selectmascotas=document.getElementById("selectmascotas");
 
 socket.on('connect', () => {
@@ -20,4 +24,10 @@ function reportar(){
     const mascota_id=selectmascotas.options[selectmascotas.selectedIndex].value;
     const id=parseInt(mascota_id);
     socket.emit('report',(id));
+}
+
+function emitir(){
+    const token=document.getElementById('intoken').value;
+    socket.emit('emitir',token);
+    console.log(token);
 }

@@ -4,6 +4,23 @@ const resultados=require('../controllers/resultados');
 
 const socketController = async( socket = new Socket(), io ) => {
 
+    if (socket.handshake.headers['x-token']){
+        console.log('Cliente Autorizado Conectado',socket.handshake.headers['x-token']);
+        const uid=socket.handshake.headers['x-token'];
+        socket.join( uid );
+    }else{
+        console.log("no token")
+        socket.disconnect();
+    }
+
+    socket.on('emitir',(token)=> {
+        if (token){
+            console.log(token);
+            socket.to( token ).emit( 'usuario-conectado');
+        }
+    });
+
+    
     socket.on('nuevo-post',()=>{
         socket.broadcast.emit('post');
     })
