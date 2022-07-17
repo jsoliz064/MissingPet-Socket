@@ -40,6 +40,19 @@ const get=(id)=>{
     });
 }
 
+const mascotasfoto=()=>{
+    return new Promise((resolve,reject)=>{
+        //pool.query('SELECT fotos.url, razas.nombre as raza,mascotas.nombre as nombre,mascotas.size, mascotas.mascota_estado as estado FROM fotos JOIN mascotas ON fotos.mascota_id=mascotas.id JOIN razas ON razas.id=mascotas.raza_id WHERE fotos.orden=0', function (err, result) {
+        pool.query('SELECT fotos.id, fotos.url FROM fotos JOIN mascotas ON mascotas.id=fotos.mascota_id', function (err, result) {
+            if (err){
+                reject(err);
+            }else{
+                resolve(result.rows);
+            }
+        });
+    });
+}
+
 module.exports ={
-    perdidos,reportados,get
+    perdidos,reportados,get,mascotasfoto
 }

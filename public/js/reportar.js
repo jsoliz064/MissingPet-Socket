@@ -1,6 +1,6 @@
 let socket=io( {
     extraHeaders: {
-        'x-token': "123456"
+        'x-token': "2"
     }
  });
 let selectmascotas=document.getElementById("selectmascotas");

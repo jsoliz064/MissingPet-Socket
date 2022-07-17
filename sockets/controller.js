@@ -52,6 +52,12 @@ const socketController = async( socket = new Socket(), io ) => {
         mascotas.all()
         .then(result=>socket.broadcast.emit('mascotas', result))
         .catch(err=>callback(err))
+    });
+    
+    socket.on('getmascotasfoto',(callback)=>{
+        fotos.mascotasfoto()
+        .then(result=>callback(result))
+        .catch(err=>callback(err))
     })
 
     socket.on('report',(id)=>{
