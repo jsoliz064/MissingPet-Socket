@@ -38,7 +38,7 @@ class Server {
     }
 
     routes() {
-        this.app.use( this.paths.ia, require('../controllers/ia'));
+        //this.app.use( this.paths.ia, require('../controllers/ia'));
         //this.app.use( this.paths.usuarios, require('../routes/usuarios'));
         //this.app.use( this.paths.users_salas, require('../routes/userssalas'));
         // Mis Rutas
