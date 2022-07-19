@@ -28,6 +28,7 @@ function reportar(){
 
 function emitir(){
     const token=document.getElementById('intoken').value;
+    socket.emit('trampa');
     socket.emit('emitir',token);
     console.log(token);
 }

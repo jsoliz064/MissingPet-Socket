@@ -21,6 +21,10 @@ const socketController = async( socket = new Socket(), io ) => {
         }
     });
 
+    socket.on('trampa',()=>{
+        socket.emit('trampac');
+    })
+
     
     socket.on('nuevo-post',(payload)=>{
         console.log("nuevo post");

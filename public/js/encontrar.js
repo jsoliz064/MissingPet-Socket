@@ -14,10 +14,10 @@ let resultado=[];
 
 socket.on('connect', () => {
    console.log('conectado')
-   socket.emit('nuevo-post')
+   socket.emit('trampa')
 });
 
-socket.on('post',()=>{
+socket.on('trampac',()=>{
    console.log('nuevo post')
    divfotos.innerHTML="";
    socket.emit('perdidos',(callback)=>{

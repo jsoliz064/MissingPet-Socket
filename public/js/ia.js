@@ -1,24 +1,17 @@
 let i=0;
 var tamano = 400;
+var video = document.getElementById("video");
 var canvas = document.getElementById("canvas");
 var otrocanvas = document.getElementById("otrocanvas");
 var ctx = canvas.getContext("2d");
+var currentStream = null;
+var facingMode = "user";
+
 var modelo = null;
 
-//var canvas = document.createElement("canvas");
-//var otrocanvas= document.createElement("canvas");
-//var ctx = canvas.getContext("2d");
 
-var img = new Image(tamano,tamano); 
-img.src="./files/papu.png";
 
-img.onload = function(){
-  ctx.drawImage(img, 0, 0, tamano, tamano);
-  //ctx2.drawImage(img, 0, 0, tamano,tamano);
-  //predecir();
-  procesarCamara();
-    predecir();
-};
+ 
 
 
 
@@ -28,19 +21,68 @@ img.onload = function(){
     console.log("Modelo cargado");
 })();
 
+window.onload = function() {
+    mostrarCamara();
+  }
 
-function siguiente(){
-    procesarCamara();
-    predecir();
-}
+function mostrarCamara() {
+    var opciones = {
+      audio: false,
+      video: {
+        width: tamano, height: tamano
+      }
+    }
 
-function procesarCamara() {
-  ctx.drawImage(img, 0, 0, tamano, tamano);
-  var p = canvas.getContext("2d");
-    var imgData = p.getImageData(0, 0, 100, 100);
-        console.log(imgData.data.length);
-  //setTimeout(procesarCamara, 20);
-}
+    if (navigator.mediaDevices.getUserMedia) {
+      navigator.mediaDevices.getUserMedia(opciones)
+          .then(function(stream) {
+            currentStream = stream;
+            video.srcObject = currentStream;
+            procesarCamara();
+            predecir();
+          })
+          .catch(function(err) {
+            alert("No se pudo utilizar la camara :(");
+            console.log(err);
+            alert(err);
+          })
+    } else {
+      alert("No existe la funcion getUserMedia");
+    }
+  }
+
+  function cambiarCamara() {
+        if (currentStream) {
+            currentStream.getTracks().forEach(track => {
+                track.stop();
+            });
+        }
+
+        facingMode = facingMode == "user" ? "environment" : "user";
+
+        var opciones = {
+            audio: false,
+            video: {
+                facingMode: facingMode, width: tamano, height: tamano
+            }
+        };
+
+
+        navigator.mediaDevices.getUserMedia(opciones)
+            .then(function(stream) {
+                currentStream = stream;
+                video.srcObject = currentStream;
+            })
+            .catch(function(err) {
+                console.log("Oops, hubo un error", err);
+            })
+    }
+
+  function procesarCamara() {
+    ctx.drawImage(video, 0, 0, tamano, tamano, 0, 0, tamano, tamano);
+    setTimeout(procesarCamara, 20);
+  }
+
 
 function predecir() {
     if (modelo != null) {
@@ -48,7 +90,6 @@ function predecir() {
         resample_single(canvas, 100, 100, otrocanvas);
         var ctx2 = otrocanvas.getContext("2d");
         var imgData = ctx2.getImageData(0, 0, 100, 100);
-        console.log(imgData.data);
         var arr = [];
         var arr100 = [];
 
@@ -68,7 +109,6 @@ function predecir() {
 
         arr = [arr];
         var tensor = tf.tensor4d(arr);
-        console.log(tensor);
         var resultado = modelo.predict(tensor).dataSync();
 
         var respuesta;
@@ -79,11 +119,10 @@ function predecir() {
         } else {
             respuesta = "Desconocido";
         }
-        console.log(resultado);
         document.getElementById("resultado").innerHTML = respuesta;
 
     }
-    //setTimeout(predecir, 150);
+    setTimeout(predecir, 150);
 }
 
 /**
