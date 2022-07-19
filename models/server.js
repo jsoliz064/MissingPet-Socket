@@ -11,9 +11,7 @@ class Server {
         this.io     = require('socket.io')( this.server );
 
         this.paths = {
-            usuarios:   '/api/users',
-            sala:     '/api/salas',
-            users_salas: '/api/userssalas'
+            ia:   '/api/ia',
         }
 
         // Conectar a base de datos
@@ -40,7 +38,7 @@ class Server {
     }
 
     routes() {
-        //this.app.use( this.paths.sala, require('../routes/sala'));
+        this.app.use( this.paths.ia, require('../controllers/ia'));
         //this.app.use( this.paths.usuarios, require('../routes/usuarios'));
         //this.app.use( this.paths.users_salas, require('../routes/userssalas'));
         // Mis Rutas

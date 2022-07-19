@@ -1,6 +1,7 @@
 const fotos=require('../controllers/fotos');
 const mascotas=require('../controllers/mascotas');
 const resultados=require('../controllers/resultados');
+const notificaciones=require('../controllers/notificaciones');
 
 const socketController = async( socket = new Socket(), io ) => {
 
@@ -21,8 +22,22 @@ const socketController = async( socket = new Socket(), io ) => {
     });
 
     
-    socket.on('nuevo-post',()=>{
-        socket.broadcast.emit('post');
+    socket.on('nuevo-post',(payload)=>{
+        console.log("nuevo post");
+        if (payload) {
+            socket.to( payload.user_token ).emit('post',payload);
+        }
+    })
+
+    socket.on('new-comment',(payload)=>{
+        console.log("nuevo comentario");
+        console.log(payload);
+        if (payload){
+            /* notificaciones.crear(payload)
+            .then(result=>callback(result))
+            .catch(err=>callback(err)) */
+            socket.to( payload.user_token ).emit('new_notification',payload);
+        }
     })
 
     socket.on('perdidos',(callback)=>{

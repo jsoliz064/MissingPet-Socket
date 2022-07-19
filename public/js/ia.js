@@ -1,20 +1,25 @@
-let socket=io( {
-    extraHeaders: {
-        'x-token': "3"
-    }
- });
-
-let mascotas=[];
 let i=0;
 var tamano = 400;
 var canvas = document.getElementById("canvas");
 var otrocanvas = document.getElementById("otrocanvas");
 var ctx = canvas.getContext("2d");
 var modelo = null;
-var img = new Image(400,400); 
 
-let imagenes=['../img/perro.png','../img/gato.png'];
-//const url="http://supportficct.ga/MissingPet-Laravel/public"+mascotas[i].url;
+//var canvas = document.createElement("canvas");
+//var otrocanvas= document.createElement("canvas");
+//var ctx = canvas.getContext("2d");
+
+var img = new Image(tamano,tamano); 
+img.src="./files/papu.png";
+
+img.onload = function(){
+  ctx.drawImage(img, 0, 0, tamano, tamano);
+  //ctx2.drawImage(img, 0, 0, tamano,tamano);
+  //predecir();
+  procesarCamara();
+    predecir();
+};
+
 
 
 (async () => {
@@ -23,41 +28,27 @@ let imagenes=['../img/perro.png','../img/gato.png'];
     console.log("Modelo cargado");
 })();
 
-socket.on('connect', () => {
-    console.log('conectado')
-    socket.emit('getmascotasfoto',(callback)=>{
-        mascotas=callback;
-        i=0;
-        img.src=`https://supportficct.ga/MissingPet-Laravel/public${mascotas[i].url}`;
-        img.setAttribute('crossOrigin', '');
-        img.crossOrigin = "Anonymous";
-        //img.src=imagenes[0]+'?' + new Date().getTime();;
-        procesarCamara();
-        predecir();
-     })
- });
 
 function siguiente(){
-    i++;
-    if (i==imagenes.length){
-        i=0;
-    }
-    img.src = imagenes[i];
+    procesarCamara();
+    predecir();
 }
 
 function procesarCamara() {
   ctx.drawImage(img, 0, 0, tamano, tamano);
-  setTimeout(procesarCamara, 20);
+  var p = canvas.getContext("2d");
+    var imgData = p.getImageData(0, 0, 100, 100);
+        console.log(imgData.data.length);
+  //setTimeout(procesarCamara, 20);
 }
 
 function predecir() {
     if (modelo != null) {
         console.log('prediciendo')
         resample_single(canvas, 100, 100, otrocanvas);
-
         var ctx2 = otrocanvas.getContext("2d");
         var imgData = ctx2.getImageData(0, 0, 100, 100);
-
+        console.log(imgData.data);
         var arr = [];
         var arr100 = [];
 
@@ -76,8 +67,8 @@ function predecir() {
         }
 
         arr = [arr];
-
         var tensor = tf.tensor4d(arr);
+        console.log(tensor);
         var resultado = modelo.predict(tensor).dataSync();
 
         var respuesta;
@@ -88,10 +79,11 @@ function predecir() {
         } else {
             respuesta = "Desconocido";
         }
+        console.log(resultado);
         document.getElementById("resultado").innerHTML = respuesta;
 
     }
-    setTimeout(predecir, 150);
+    //setTimeout(predecir, 150);
 }
 
 /**
@@ -120,6 +112,7 @@ function resample_single(canvas, width, height, resize_canvas) {
     var img2 = ctx2.createImageData(width, height);
     var data = img.data;
     var data2 = img2.data;
+    //console.log(data2);
 
     for (var j = 0; j < height; j++) {
         for (var i = 0; i < width; i++) {
@@ -168,5 +161,6 @@ function resample_single(canvas, width, height, resize_canvas) {
             data2[x2 + 3] = gx_a / weights_alpha;
         }
     }
+    //console.log(data2);
     ctx2.putImageData(img2, 0, 0);
 }
