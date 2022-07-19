@@ -36,7 +36,7 @@ const socketController = async( socket = new Socket(), io ) => {
             /* notificaciones.crear(payload)
             .then(result=>callback(result))
             .catch(err=>callback(err)) */
-            socket.to( payload.user_token ).emit('new_notification',payload);
+            socket.emit('new_notification',payload);
         }
     })
 
