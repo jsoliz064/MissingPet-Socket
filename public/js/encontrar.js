@@ -49,7 +49,7 @@ function cargarfotoperdido($foto){
    divfotoperdido.innerHTML="";
    var div = document.createElement("div");
    div.innerHTML=`<div class="card-body">
-                     <img class="card-img-top" src="https://supportficct.ga/MissingPet-Laravel/public${$foto.url}" alt="Card image cap" style="width: 50%;">
+                     <img class="card-img-top" src="${$foto.image_path}" alt="Card image cap" style="width: 50%;">
                      <h3 class="card-title text-uppercase">
                            ${$foto.nombre}
                      </h3>
@@ -65,11 +65,10 @@ function cargarfotos(array) {
       var div = document.createElement("div");
       div.innerHTML=`<div class="card text-center">
                         <div class="card-body">
-                           <img class="card-img-top" src="https://supportficct.ga/MissingPet-Laravel/public${array[i].url}" alt="Card image cap" style="width: 80%;">
+                           <img class="card-img-top" src="${array[i].image_path}" alt="Card image cap" style="width: 80%;">
                            <h4 class="card-title text-uppercase">
-                           ${array[i].nombre}
+                           ${array[i].description}
                            </h4>
-                           <p>raza: ${array[i].raza}</p>
                         </div>
                      </div>`;
       div.setAttribute('class',"col-md-2");

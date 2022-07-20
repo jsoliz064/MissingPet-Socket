@@ -1,5 +1,13 @@
 const express = require('express');
+const cors = require('cors');
 const { socketController } = require('../sockets/controller');
+
+const flash = require('connect-flash');
+const session = require('express-session');
+const MySQLStore = require('express-mysql-session');
+const passport = require('passport');
+const { database } = require('../database/keys');
+//MYSQL
 const pool = require('../database/configpg');
 
 class Server {
@@ -32,9 +40,25 @@ class Server {
     }
 
     middlewares() {
+        this.app.use( cors() );
+
+        // Lectura y parseo del body
+        this.app.use( express.json() );
+
+        // Directorio Público
         this.app.use( express.json() );
         // Directorio Público
         this.app.use( express.static('public') );
+
+        this.app.use(session({
+            secret: 'msm',
+            resave: false,
+            saveUninitialized: false,
+            store: new MySQLStore(database)
+          }));
+        this.app.use(flash());
+        this.app.use(passport.initialize());
+        this.app.use(passport.session());
     }
 
     routes() {
