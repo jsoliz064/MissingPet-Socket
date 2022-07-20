@@ -53,7 +53,7 @@ function cargarfotoperdido($foto){
                      <h3 class="card-title text-uppercase">
                            ${$foto.nombre}
                      </h3>
-                     <p>raza: ${$foto.raza} </p>
+                     <p>raza: ${$foto.created_at} </p>
                      <button onclick="enviarResultado()" class="btn btn-primary">Enviar resultado</button>
                   </div>`;
    div.setAttribute('class',"card text-center");
