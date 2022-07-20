@@ -67,7 +67,7 @@ function cargarfotos(array) {
                         <div class="card-body">
                            <img class="card-img-top" src="${array[i].image_path}" alt="Card image cap" style="width: 80%;">
                            <h4 class="card-title text-uppercase">
-                           ${array[i].description}
+                           ${array[i].created_at}
                            </h4>
                         </div>
                      </div>`;
