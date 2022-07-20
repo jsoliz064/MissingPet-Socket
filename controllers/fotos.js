@@ -15,7 +15,7 @@ const pool = require('../database/configpg');
 } */
 const perdidos=()=>{
     return new Promise((resolve,reject)=>{
-        pool.query('SELECT * FROM `posts` WHERE id=1', function (err, result) {
+        pool.query('SELECT * FROM `posts`', function (err, result) {
             if (err){
                 reject(err);
             }else{
@@ -42,7 +42,7 @@ const perdidos=()=>{
 const reportados=()=>{
     return new Promise((resolve,reject)=>{
         //pool.query('SELECT fotos.url, razas.nombre as raza,mascotas.nombre as nombre,mascotas.size, mascotas.mascota_estado as estado FROM fotos JOIN mascotas ON fotos.mascota_id=mascotas.id JOIN razas ON razas.id=mascotas.raza_id WHERE fotos.orden=0', function (err, result) {
-        pool.query('SELECT * FROM `posts` WHERE id=1', function (err, result) {
+        pool.query('SELECT * FROM `posts`', function (err, result) {
         
             if (err){
                 reject(err);
