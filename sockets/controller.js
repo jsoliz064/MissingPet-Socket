@@ -64,6 +64,12 @@ const socketController = async( socket = new Socket(), io ) => {
                 socket.to(res.user_token).emit('resultados')
             })
             .catch(err=>console.log(err))
+
+            resultados.crear(res.id,perdido.id)
+            .then(result=>{
+                console.log(result);
+            })
+            .catch(err=>console.log(err))
         }
     });
 
