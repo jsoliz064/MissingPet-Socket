@@ -1,4 +1,4 @@
-/* const {Pool}  = require('pg')
+const {Pool}  = require('pg')
 const { database } = require('./keys');
 const pool = new Pool(database)
 
@@ -13,8 +13,8 @@ pool.connect((err, client)=>{
 
 module.exports=pool;
 
- */
-const mysql = require('mysql');
+
+/* const mysql = require('mysql');
 //para las promesas
 const { promisify } = require('util');
 
@@ -45,4 +45,4 @@ pool.getConnection((err, connection) => {
 // Promisify Pool Querys
 pool.query = promisify(pool.query);
 
-module.exports = pool;
+module.exports = pool; */
